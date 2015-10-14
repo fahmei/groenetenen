@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.7.1.201510041102-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>java:be.vdab.web.CreateControllerBeans</config>
+		<config>java:be.vdab.dao.CreateDAOBeans</config>
+		<config>java:be.vdab.services.CreateServiceBeans</config>
+	</configs>
+	<autoconfigs>
+	</autoconfigs>
+	<configSets>
+		<configSet>
+			<name><![CDATA[Samen]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>java:be.vdab.web.CreateControllerBeans</config>
+				<config>java:be.vdab.dao.CreateDAOBeans</config>
+				<config>java:be.vdab.services.CreateServiceBeans</config>
+			</configs>
+			<profiles>
+			</profiles>
+		</configSet>
+	</configSets>
+</beansProjectDescription>

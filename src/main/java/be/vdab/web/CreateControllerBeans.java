@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan
-public class CreateControllerBeans extends WebMvcConfigurerAdapter {
+class CreateControllerBeans extends WebMvcConfigurerAdapter {
 
 	@Bean
 	InternalResourceViewResolver viewResolver(){
@@ -28,6 +29,11 @@ public class CreateControllerBeans extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
 		registry.addResourceHandler("/styles/**").addResourceLocations("/styles/");
 		registry.addResourceHandler("/scripts/**").addResourceLocations("/scripts/");
+	}
+	
+	@Override	//Rechtstreeks naar de JSP zonder een controller
+	public void addViewControllers(ViewControllerRegistry registry){
+		registry.addViewController("/info").setViewName("info");
 	}
 	
 }
