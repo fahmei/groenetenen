@@ -3,12 +3,11 @@ package be.vdab.web;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.omg.CosNaming.BindingIteratorOperations;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.DataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -103,7 +102,7 @@ class FiliaalController {
 	//Hier komen er geen param binnen, dit dient enkel om een voorwaarde te stellen: als URL de params van en tot
 	@RequestMapping(method = RequestMethod.GET, params = { "vanPostcode", "totPostcode" })
 	//Hier maakt hij zelf een object PostcodeReeks en zoket indien er zijn in de URL params naar var dat hij dan injecteerd via de setters van de variabel
-	ModelAndView findByPostcodeReeks(PostcodeReeks reeks, BindingResult bindingResult) {
+	ModelAndView findByPostcodeReeks(@Valid PostcodeReeks reeks, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView(PER_POSTCODE_VIEW);
 		
 		if(!bindingResult.hasErrors()){
@@ -116,11 +115,6 @@ class FiliaalController {
 		}
 		
 		return modelAndView;
-	}
-
-	@InitBinder("postcodeReeks")
-	void initBinderPostcodeReeks(DataBinder dataBinder){
-		dataBinder.setRequiredFields("vanPostcode", "totPostcode");
 	}
 	
 }
