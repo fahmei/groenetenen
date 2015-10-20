@@ -7,6 +7,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import be.vdab.dao.CreateDAOBeans;
+import be.vdab.datasource.CreateDataSourceBean;
 import be.vdab.services.CreateServiceBeans;
 
 public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -18,7 +19,7 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
 	
 	@Override
 	protected Class<?>[] getRootConfigClasses() {	//Kan gebruikt worden door alle onderdelen
-		return new Class<?>[]{CreateDAOBeans.class, CreateServiceBeans.class};
+		return new Class<?>[]{CreateDataSourceBean.class, CreateDAOBeans.class, CreateServiceBeans.class};
 	}
 
 	@Override
@@ -32,5 +33,7 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
 		utf8Filter.setEncoding("UTF-8");
 		return new Filter[]{utf8Filter};
 	}
+	
+	
 
 }

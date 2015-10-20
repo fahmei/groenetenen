@@ -22,13 +22,4 @@ public class PostcodeReeks {
 	public Integer getTotPostcode() {
 		return totPostcode;
 	}
-
-	public void setVanPostcode(Integer vanPostcode) {
-		this.vanPostcode = vanPostcode;
-	}
-
-	public void setTotPostcode(Integer totPostcode) {
-		this.totPostcode = totPostcode;
-	}
-	
 }

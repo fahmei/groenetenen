@@ -17,28 +17,40 @@
 			<dl>
 				<dt>Straat</dt>
 				<dd>${filiaal.adres.straat}</dd>
+				
 				<dt>Huisnr.</dt>
 				<dd>${filiaal.adres.huisNr}</dd>
+				
 				<dt>Postcode</dt>
 				<dd>${filiaal.adres.postcode}</dd>
+				
 				<dt>Gemeente</dt>
 				<dd>${filiaal.adres.gemeente}</dd>
+				
 				<dt>Type</dt>
 				<dd>${filiaal.hoofdFiliaal ? "Hoofdfiliaal" : "Bijfiliaal"}</dd>
+				
 				<dt>Waarde gebouw</dt>
-				<dd>
-					&euro;<spring:eval expression='filiaal.waardeGebouw'/>
-				</dd>
+				<dd>&euro;<spring:eval expression='filiaal.waardeGebouw' /></dd>
+				
 				<dt>Ingebruikname</dt>
-				<dd>
-					<spring:eval expression='filiaal.inGebruikName'/>
-				</dd>
+				<dd><spring:eval expression='filiaal.inGebruikName' /></dd>
 			</dl>
+			
 			<spring:url value='/filialen/{id}/verwijderen' var='verwijderURL'>
 				<spring:param name='id' value='${filiaal.id}' />
 			</spring:url>
+			
 			<form action='${verwijderURL}' method='post'>
 				<input type='submit' value='Verwijderen'>
+			</form>
+			
+			<spring:url value='/filialen/{id}/wijzigen' var='wijzigURL'>
+				<spring:param name='id' value='${filiaal.id}' />
+			</spring:url>
+			
+			<form action='${wijzigURL}'>
+				<input type='submit' value='Wijzigen'>
 			</form>
 		</c:when>
 		<c:otherwise>
