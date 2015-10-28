@@ -15,7 +15,7 @@
 <form:label path='adres.gemeente'>Gemeente:<form:errors path='adres.gemeente' delimiter=', ' /></form:label>
 <form:input path='adres.gemeente' required='required' maxlength='50' />
 
-<form:label path='inGebruikName'>Ingebruikname (dd-MM-yyyy):<form:errors path='inGebruikName' delimiter=', ' /></form:label>
+<form:label path='inGebruikName'>Ingebruikname (dd/MM/yyyy):<form:errors path='inGebruikName' delimiter=', ' /></form:label>
 <form:input path='inGebruikName' required='required' />
 
 <form:label path='waardeGebouw'>Waarde gebouw:<form:errors path='waardeGebouw' delimiter=', ' /></form:label>

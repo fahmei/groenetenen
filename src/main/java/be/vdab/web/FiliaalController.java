@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -21,7 +22,7 @@ import be.vdab.services.FiliaalService;
 import be.vdab.valueobjects.PostcodeReeks;
 
 @Controller
-@RequestMapping("/filialen")
+@RequestMapping(path = "/filialen", produces = MediaType.TEXT_HTML_VALUE)
 class FiliaalController {
 
 	private static final String FILIALEN_VIEW = "filialen/filialen";
@@ -37,6 +38,8 @@ class FiliaalController {
 	private static final String PER_POSTCODE_VIEW = "filialen/perpostcode";
 	private static final String WIJZIGEN_VIEW = "filialen/wijzigen";
 	private static final String REDIRECT_URL_NA_WIJZIGEN = "redirect:/filialen";
+	private static final String AFSCHRIJVEN_VIEW = "filialen/afschrijven";
+	private static final String REDIRECT_NA_AFSCHRIJVEN = "redirect:/";
 
 	private final FiliaalService filiaalService;
 
@@ -65,22 +68,21 @@ class FiliaalController {
 		return REDIRECT_URL_NA_TOEVOEGEN;
 	}
 
-	@RequestMapping(path = "{id}", method = RequestMethod.GET)
-	ModelAndView read(@PathVariable long id) {
+	@RequestMapping(path = "{filiaal}", method = RequestMethod.GET)
+	ModelAndView read(@PathVariable Filiaal filiaal) {
 		ModelAndView modelAndView = new ModelAndView(FILIAAL_VIEW);
-		Filiaal filiaal = filiaalService.read(id);
 		if (filiaal != null) {
 			modelAndView.addObject(filiaal);
 		}
 		return modelAndView;
 	}
 
-	@RequestMapping(path = "{id}/verwijderen", method = RequestMethod.POST)
-	String delete(@PathVariable long id, RedirectAttributes redirectAttributes) {
-		Filiaal filiaal = filiaalService.read(id);
+	@RequestMapping(path = "{filiaal}/verwijderen", method = RequestMethod.POST)
+	String delete(@PathVariable Filiaal filiaal, RedirectAttributes redirectAttributes) {
 		if (filiaal == null) {
 			return REDIRECT_URL_FILIAAL_NIET_GEVONDEN;
 		}
+		long id = filiaal.getId();
 		try {
 			filiaalService.delete(id);
 			redirectAttributes.addAttribute("id", id).addAttribute("naam", filiaal.getNaam());
@@ -104,12 +106,7 @@ class FiliaalController {
 		return new ModelAndView(PER_POSTCODE_VIEW).addObject(reeks);
 	}
 
-	// Hier komen er geen param binnen, dit dient enkel om een voorwaarde te
-	// stellen: als URL de params van en tot
 	@RequestMapping(method = RequestMethod.GET, params = { "vanPostcode", "totPostcode" })
-	// Hier maakt hij zelf een object PostcodeReeks en zoket indien er zijn in
-	// de URL params naar var dat hij dan injecteerd via de setters van de
-	// variabel
 	ModelAndView findByPostcodeReeks(@Valid PostcodeReeks reeks, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView(PER_POSTCODE_VIEW);
 
@@ -135,9 +132,8 @@ class FiliaalController {
 		binder.initDirectFieldAccess();
 	}
 
-	@RequestMapping(path = "{id}/wijzigen", method = RequestMethod.GET)
-	ModelAndView updateForm(@PathVariable long id) {
-		Filiaal filiaal = filiaalService.read(id);
+	@RequestMapping(path = "{filiaal}/wijzigen", method = RequestMethod.GET)
+	ModelAndView updateForm(@PathVariable Filiaal filiaal) {
 		if (filiaal == null) {
 			return new ModelAndView(REDIRECT_URL_FILIAAL_NIET_GEVONDEN);
 		}
@@ -151,6 +147,21 @@ class FiliaalController {
 		}
 		filiaalService.update(filiaal);
 		return REDIRECT_URL_NA_WIJZIGEN;
+	}
+
+	@RequestMapping(path = "afschrijven", method = RequestMethod.GET)
+	ModelAndView afschrijvenForm() {
+		return new ModelAndView(AFSCHRIJVEN_VIEW, "filialen", filiaalService.findNietAfgeschreven())
+				.addObject(new AfschrijvenForm());
+	}
+
+	@RequestMapping(path = "afschrijven", method = RequestMethod.POST)
+	ModelAndView afschrijven(@Valid AfschrijvenForm afschrijvenForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) { 
+			return new ModelAndView(AFSCHRIJVEN_VIEW, "filialen", filiaalService.findNietAfgeschreven());
+		}
+		filiaalService.afschrijven(afschrijvenForm.getFilialen());
+		return new ModelAndView(REDIRECT_NA_AFSCHRIJVEN);
 	}
 
 }
