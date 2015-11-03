@@ -12,6 +12,13 @@
 		<config>java:be.vdab.services.CreateServiceBeans</config>
 	</configs>
 	<autoconfigs>
+		<config>java:be.vdab.restservices.CreateRestControllerBeans</config>
+		<config>java:be.vdab.restclients.YahooKoersenClient</config>
+		<config>java:be.vdab.datasource.CreateDataSourceBean</config>
+		<config>java:be.vdab.restclients.CreateRestClientBeans</config>
+		<config>java:be.vdab.mail.CreateMailBeans</config>
+		<config>java:be.vdab.mail.MailSenderImpl</config>
+		<config>java:be.vdab.web.VoorkeurImpl</config>
 	</autoconfigs>
 	<configSets>
 		<configSet>
@@ -22,6 +29,13 @@
 				<config>java:be.vdab.web.CreateControllerBeans</config>
 				<config>java:be.vdab.dao.CreateDAOBeans</config>
 				<config>java:be.vdab.services.CreateServiceBeans</config>
+				<config>java:be.vdab.datasource.CreateDataSourceBean</config>
+				<config>java:be.vdab.mail.CreateMailBeans</config>
+				<config>java:be.vdab.restclients.CreateRestClientBeans</config>
+				<config>java:be.vdab.restservices.CreateRestControllerBeans</config>
+				<config>java:be.vdab.mail.MailSenderImpl</config>
+				<config>java:be.vdab.web.VoorkeurImpl</config>
+				<config>java:be.vdab.restclients.YahooKoersenClient</config>
 			</configs>
 			<profiles>
 			</profiles>

@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import be.vdab.dao.FiliaalDAO;
 import be.vdab.entities.Filiaal;
 import be.vdab.exceptions.FiliaalHeeftNogWerknemersException;
+import be.vdab.mail.MailSender;
 import be.vdab.valueobjects.PostcodeReeks;
 
 @Service
@@ -17,16 +19,19 @@ import be.vdab.valueobjects.PostcodeReeks;
 class FiliaalServiceImpl implements FiliaalService {
 
 	private final FiliaalDAO filiaalDAO;
+	private final MailSender mailSender;
 
 	@Autowired
-	FiliaalServiceImpl(FiliaalDAO filiaalDAO) {
+	FiliaalServiceImpl(FiliaalDAO filiaalDAO, MailSender mailSender) {
 		this.filiaalDAO = filiaalDAO;
+		this.mailSender = mailSender;
 	}
 
 	@Override
 	@ModifyingTransactionalServiceMethod
-	public void create(Filiaal filiaal) {
+	public void create(Filiaal filiaal, String urlAlleFilialen) {
 		filiaalDAO.save(filiaal);
+		mailSender.nieuwFiliaalMail(filiaal, urlAlleFilialen + '/' + filiaal.getId());
 	}
 
 	@Override
@@ -63,6 +68,7 @@ class FiliaalServiceImpl implements FiliaalService {
 	}
 
 	@Override
+	@PreAuthorize("hasAuthority('manager')")
 	public List<Filiaal> findByPostcodeReeks(PostcodeReeks reeks) {
 		return filiaalDAO.findByAdresPostcodeBetweenOrderByNaam(reeks.getVanPostcode(), reeks.getTotPostcode());
 	}
@@ -78,6 +84,12 @@ class FiliaalServiceImpl implements FiliaalService {
 		for (Filiaal filiaal : filialen) {
 			filiaal.afschrijven();
 		}
+	}
+
+	@Override	
+	//@Scheduled(/*cron = "0 0 1 * * *" */ fixedRate=60000)
+	public void aantalFilialenMail(long aantal) {
+		mailSender.aantalFilialenMail(filiaalDAO.count());
 	}
 
 }

@@ -2,6 +2,7 @@ package be.vdab.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ class FiliaalController {
 	private static final String REDIRECT_URL_NA_WIJZIGEN = "redirect:/filialen";
 	private static final String AFSCHRIJVEN_VIEW = "filialen/afschrijven";
 	private static final String REDIRECT_NA_AFSCHRIJVEN = "redirect:/";
+	private static final String PER_ID_VIEW = "filialen/perid";
 
 	private final FiliaalService filiaalService;
 
@@ -60,11 +62,11 @@ class FiliaalController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	String create(@Valid Filiaal filiaal, BindingResult bindingResult) {
+	String create(@Valid Filiaal filiaal, BindingResult bindingResult, HttpServletRequest request) {
 		if (bindingResult.hasErrors()) {
 			return TOEVOEGEN_VIEW;
 		}
-		filiaalService.create(filiaal);
+		filiaalService.create(filiaal, request.getRequestURL().toString());
 		return REDIRECT_URL_NA_TOEVOEGEN;
 	}
 
@@ -101,8 +103,6 @@ class FiliaalController {
 	@RequestMapping(path = "perpostcode", method = RequestMethod.GET)
 	ModelAndView findByPostcodeReeks() {
 		PostcodeReeks reeks = new PostcodeReeks();
-		// reeks.setVanPostcode(1000);
-		// reeks.setTotPostcode(9999);
 		return new ModelAndView(PER_POSTCODE_VIEW).addObject(reeks);
 	}
 
@@ -162,6 +162,11 @@ class FiliaalController {
 		}
 		filiaalService.afschrijven(afschrijvenForm.getFilialen());
 		return new ModelAndView(REDIRECT_NA_AFSCHRIJVEN);
+	}
+	
+	@RequestMapping(path = "perid", method = RequestMethod.GET)
+	String findById(){
+		return PER_ID_VIEW;
 	}
 
 }

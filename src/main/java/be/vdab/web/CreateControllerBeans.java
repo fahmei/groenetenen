@@ -77,6 +77,7 @@ public class CreateControllerBeans extends WebMvcConfigurerAdapter {
 	@Override // Rechtstreeks naar de JSP zonder een controller
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/info").setViewName("info");
+		registry.addViewController("/login").setViewName("login");
 	}
 
 }
