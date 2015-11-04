@@ -7,6 +7,7 @@ import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import be.vdab.aop.CreateAOPBeans;
 import be.vdab.dao.CreateDAOBeans;
 import be.vdab.datasource.CreateDataSourceBean;
 import be.vdab.mail.CreateMailBeans;
@@ -24,12 +25,19 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
 	
 	@Override
 	protected Class<?>[] getRootConfigClasses() {	//Kan gebruikt worden door alle onderdelen
-		return new Class<?>[]{CreateDataSourceBean.class, CreateDAOBeans.class, CreateServiceBeans.class, CreateRestClientBeans.class, CreateMailBeans.class, CreateSecurityFilter.class};
+		return new Class<?>[]{	CreateDataSourceBean.class, 
+								CreateDAOBeans.class, 
+								CreateServiceBeans.class, 
+								CreateRestClientBeans.class, 
+								CreateMailBeans.class, 
+								CreateSecurityFilter.class, 
+								CreateAOPBeans.class};
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() { //Enkel gebruikbaar door de DispatcherServlet
-		return new Class<?>[]{CreateControllerBeans.class, CreateRestControllerBeans.class};
+		return new Class<?>[]{	CreateControllerBeans.class, 
+								CreateRestControllerBeans.class};
 	}
 
 	@Override
